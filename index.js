@@ -43,7 +43,7 @@ function repetitionRun() {
   for(i in dispatchedWords)
     rep_dispatched_list.append("<p class='list_item'>"+ dispatchedWords[i].join("<span class='small_space'> </span>") +"</p>");
 
-  var noiseComp = addNoise(dispatchedWords, Math.pow(errorProbability, repetitions/3+2/3));
+  var noiseComp = addNoise(dispatchedWords, errorProbability*([1, 0.9, 0.9, 0.8, 0.8, 0.7][repetitions-1]));
   var noiseWords = noiseComp[0];
   var noiseWordsHTML = noiseComp[1];
 
