@@ -7,14 +7,32 @@ var rep_dispatched_list = $('#rep_dispatched_list');
 var rep_noise_list = $('#rep_noise_list');
 var rep_decoded_list = $('#rep_decoded_list');
 
-function run() {
-  var messagesPerRun = getMessagesPerRun();
-  var repetitions = getRepetitions();
-  var errorProbability = getErrorProbability();
-  var isRepeatWords = getIsRepeatWords();
-  var wordLength = getWordLength();
+var result_correct = $('#result_correct');
+var result_undetected = $('#result_undetected');
+var result_detected = $('#result_detected');
+var result_all = $('#result_all');
+var result_raw_success = $('#result_raw_success');
+var result_recalc_success = $('#result_recalc_success');
+var result_time_total = $('#result_time_total');
+var result_est = $('#result_est');
+var result_bitrate = $('#result_bitrate');
 
-  var repetition = new Repetition();
+var messagesPerRun, wordLength, errorProbability;
+var repetition = new Repetition();
+
+function updateVars() {
+  messagesPerRun = getMessagesPerRun();
+  wordLength = getWordLength();
+  errorProbability = getErrorProbability();
+}
+
+function repetitionRun() {
+  updateVars();
+  var repetitions = getRepetitions();
+//  var language = {};
+
+  var isRepeatWords = getIsRepeatWords();
+
   var dispatchedWords = generateWords(wordLength, messagesPerRun);
   if(isRepeatWords)
     dispatchedWords = repeatWords(dispatchedWords, repetitions);
@@ -25,7 +43,7 @@ function run() {
   for(i in dispatchedWords)
     rep_dispatched_list.append("<p class='list_item'>"+ dispatchedWords[i].join("<span class='small_space'> </span>") +"</p>");
 
-  var noiseComp = addNoise(dispatchedWords, errorProbability);
+  var noiseComp = addNoise(dispatchedWords, Math.pow(errorProbability, repetitions/3+2/3));
   var noiseWords = noiseComp[0];
   var noiseWordsHTML = noiseComp[1];
 
@@ -34,9 +52,28 @@ function run() {
     rep_noise_list.append("<p class='list_item'>" + noiseWordsHTML[i].join("<span class='small_space'> </span>") + "</p>");
 
   var decodedWords = repetition.decode(noiseWords, repetitions, isRepeatWords, wordLength);
-  var comparedWords = compare(dispatchedWords, decodedWords);
+  var comparison = compare(dispatchedWords, decodedWords, repetitions);
+  var comparedWords = comparison[0];
+  var result = comparison[1];
+
   rep_decoded_list.html('');
   for(i in comparedWords)
     rep_decoded_list.append("<p class='list_item'>" + comparedWords[i].join("<span class='small_space'> </span>") + "</p>");
 
+  result_correct.text(result.correct);
+  result_undetected.text(result.undetected);
+  result_detected.text(result.detected);
+  result_all.text(result.all);
+  result_raw_success.text(Math.floor(result.correct/result.all*100));
+  result_recalc_success.text(Math.floor(result.correct/(result.all-result.detected)*100));
+
+  var baseSpeed = 400.0*8.0;
+  result_time_total.text(result.all/baseSpeed);
+//  var bitrate = ((baseSpeed*(result.correct+result.detected)/result.all, 1))/Math.pow(result.undetected+1, .5)/8;
+  var oneBit = Math.pow(result.all/result.correct, 2)/(baseSpeed/1000);
+  var mod = [1.3, 2, 2.5, 2.2, 2, 1.7][repetitions-1];
+  var bitrate = baseSpeed/oneBit/100*mod;
+  result_bitrate.text(Math.floor(bitrate * 10)/10);
+
+  result_est.text(Math.floor((4*1000)/((result.correct+result.detected)/result.all*400) ));
 }

@@ -60,5 +60,6 @@ Repetition.prototype.decode = function(words, repetitions, repeatWords, messages
     }
 
   }
+
   return dWords;
 }

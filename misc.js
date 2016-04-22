@@ -44,7 +44,7 @@ repeatBits = function(words, rep) {
   var wordsN = [];
   for(i in words) {
     var arr = [];
-    for(j in words) {
+    for(j in words[i]) {
       var str = '';
       for(var k = 0; k < rep; k++)
         str += words[i][j];
@@ -83,27 +83,40 @@ addNoise = function(words, errorProbability) {
   return [wordsN, wordsHTML];
 }
 
-compare = function(words, words2) {
+compare = function(words, words2, repetitions) {
   var wordsHTML = [];
+  var result = {correct: 0, undetected: 0, detected: 0, all: 0};
+
   for(var i in words) {
     var arr = [];
     for(var j in words[i]) {
       var str = '';
       for(var k in words[i][j]) {
         var dBit = words2[i][j][k];
-        if(dBit == '2')
+        result.all++;
+        if(dBit == '2') {
           str += "<span class='error_bit_detected'>0</span>"
-        else if(dBit == '3')
+          result.detected++;
+        } else if(dBit == '3') {
           str += "<span class='error_bit_detected'>1</span>"
-        else if(words[i][j][k] == dBit)
+          result.detected++;
+        } else if(words[i][j][k] == dBit) {
           str += dBit;
-        else
+          result.correct++;
+        } else {
           str += "<span class='error_bit_decoded'>" + dBit + "</span>";
+          result.undetected++;
+        }
       }
       arr.push(str);
     }
     wordsHTML.push(arr);
   }
 
-  return wordsHTML;
+  result.correct /= repetitions;
+  result.undetected /= repetitions;
+  result.detected /= repetitions;
+  result.all /= repetitions;
+
+  return [wordsHTML, result];
 }

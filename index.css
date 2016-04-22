@@ -20,6 +20,11 @@
   font-size: 1.3vw;
 }
 
+.text_0 {
+  font-family: 'Roboto';
+  font-size: 0.9vw;
+}
+
 .list_div_parent {
   display: inline-block;
   padding-right: 2vw;
@@ -50,4 +55,39 @@
 
 .small_space {
   font-size: 0.7vw;
+}
+
+.result_div {
+  background-color: #F0F0DD;
+}
+
+.info_tab, .info_tab_active {
+  display: inline-block;
+  font-family: 'Roboto Mono';
+  font-size: 1.2vw;
+  background-color: #F0F0DD;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
+}
+
+.info_tab_active {
+  background-color: #D9D4C3;
+}
+
+.info_tab:hover, .info_tab_active:hover {
+  cursor: pointer;
+}
+
+.info_text {
+  font-family: 'Roboto';
+  font-size: 1.15vw;
+  width: 95vw;
+/*  background-color: #F0F0DD; */
+  padding-top: 0.1vw;
+  padding-bottom: 0.5vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  margin-top: 0.5vw;
 }
