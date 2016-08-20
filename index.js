@@ -15,7 +15,6 @@ var result_raw_success = $('#result_raw_success');
 var result_recalc_success = $('#result_recalc_success');
 var result_time_total = $('#result_time_total');
 var result_est = $('#result_est');
-var result_bitrate = $('#result_bitrate');
 
 var messagesPerRun, wordLength, errorProbability;
 var repetition = new Repetition();
@@ -67,13 +66,4 @@ function repetitionRun() {
   result_raw_success.text(Math.floor(result.correct/result.all*100));
   result_recalc_success.text(Math.floor(result.correct/(result.all-result.detected)*100));
 
-  var baseSpeed = 400.0*8.0;
-  result_time_total.text(result.all/baseSpeed);
-//  var bitrate = ((baseSpeed*(result.correct+result.detected)/result.all, 1))/Math.pow(result.undetected+1, .5)/8;
-  var oneBit = Math.pow(result.all/result.correct, 2)/(baseSpeed/1000);
-  var mod = [1.3, 2, 2.5, 2.2, 2, 1.7, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0][repetitions-1];
-  var bitrate = baseSpeed/oneBit/100*mod;
-  result_bitrate.text(Math.floor(bitrate * 10)/10);
-
-  result_est.text(Math.floor((4*1000)/((result.correct+result.detected)/result.all*400) ));
 }
