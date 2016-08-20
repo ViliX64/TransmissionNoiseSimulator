@@ -43,7 +43,7 @@ function repetitionRun() {
   for(i in dispatchedWords)
     rep_dispatched_list.append("<p class='list_item'>"+ dispatchedWords[i].join("<span class='small_space'> </span>") +"</p>");
 
-  var noiseComp = addNoise(dispatchedWords, errorProbability*([1, 0.9, 0.9, 0.8, 0.8, 0.7][repetitions-1]));
+  var noiseComp = addNoise(dispatchedWords, errorProbability*([1, 0.9, 0.9, 0.8, 0.8, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7][repetitions-1]));
   var noiseWords = noiseComp[0];
   var noiseWordsHTML = noiseComp[1];
 
@@ -71,7 +71,7 @@ function repetitionRun() {
   result_time_total.text(result.all/baseSpeed);
 //  var bitrate = ((baseSpeed*(result.correct+result.detected)/result.all, 1))/Math.pow(result.undetected+1, .5)/8;
   var oneBit = Math.pow(result.all/result.correct, 2)/(baseSpeed/1000);
-  var mod = [1.3, 2, 2.5, 2.2, 2, 1.7][repetitions-1];
+  var mod = [1.3, 2, 2.5, 2.2, 2, 1.7, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0][repetitions-1];
   var bitrate = baseSpeed/oneBit/100*mod;
   result_bitrate.text(Math.floor(bitrate * 10)/10);
 
